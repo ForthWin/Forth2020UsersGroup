@@ -352,7 +352,7 @@ fvariable ytemp
              theta 0.0E 0.0E 1.0E RotatedMatrix  
                  TIMER@ DROP TO msei  msei msec <> IF   msei TO msec
 		Cls		
-            0 300 0 Color                
+            0 100 0 Color                
             1  PointSize	        \ *****   size of each pixel ! 
             VIEW
 \ -----------------------ATTENTION HERE  -------------------------
