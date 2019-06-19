@@ -20,6 +20,6 @@ REQUIRE Point	~pi/lib/wincon/graph.f
 0x00FFFF Color
 300 500 180 200 Ellips \ X Y X1 Y1
 
-Do
+BEGIN
 ConRefresh
-loop
+AGAIN
