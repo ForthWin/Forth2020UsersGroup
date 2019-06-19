@@ -329,32 +329,25 @@ repeat
 
 
 : circle  INIT-MY-OPENGL 2  PointSize   \ CIR1 CIR2 ;
-            	 
 
-BLUE
-                  0.0E fto  X         0e0     fto  Y       Point	  
-              0 0 p3       view 
-
-   10000 0 DO
-         200 random 200 random 200 random color
-
-         800 RANDOM  TO CX 800 RANDOM TO CY 400 RANDOM to R
-         Bresenham_Circle view
-        loop 
-   4000 pause
+100 0 do
+	255 Random 255 Random 255 Random Color
+	500 Random 300 - TO CX 500 Random 300 - TO CY 300 Random to R
+	Bresenham_Circle loop 
+	view
+  10000 pause
 glclose
 ;
 
 : Ellipse          INIT-MY-OPENGL 2  PointSize   \ CIR1 CIR2 ;
-            	 
 
-10000 0 do
+100 0 do
          255 random 255 random 255 random color
-         500 RANDOM  TO CX 500 RANDOM  TO CY 50 RANDOM to XRadius 50 RANDOM to YRadius 
-         Bresenham_Ellipse VIEW 
+         500 Random 300 - TO CX 500 Random 300 - TO CY 250 RANDOM to XRadius 250 RANDOM to YRadius 
+         Bresenham_Ellipse 
         loop
-          
-     2400 pause
+        VIEW              	      
+     10000 pause
 glclose 
 ;
 
