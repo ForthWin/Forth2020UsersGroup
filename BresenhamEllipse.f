@@ -333,7 +333,8 @@ repeat
 100 0 do
 	255 Random 255 Random 255 Random Color
 	500 Random 300 - TO CX 500 Random 300 - TO CY 300 Random to R
-	Bresenham_Circle loop 
+	Bresenham_Circle 
+	loop 
 	view
   10000 pause
 glclose
