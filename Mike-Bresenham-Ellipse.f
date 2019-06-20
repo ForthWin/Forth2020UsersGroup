@@ -8,8 +8,8 @@
 
 
 
-S" \Users\Michel\Documents\GitHub\ForthWinUsersGroup\dessin.f" INCLUDED    \ the OpenGL routines
-S" \Users\Michel\Documents\GitHub\ForthWinUsersGroup\rand.f" INCLUDED    \ little Xor Shift pseudo-random generator 
+S" dessin.f" INCLUDED    \ the OpenGL routines
+S" rand.f" INCLUDED    \ little Xor Shift pseudo-random generator 
 
 
 
