@@ -1,8 +1,11 @@
 \ Simple but efficient 32bits Pseudo-Random generator
 \ XorShift https://en.wikipedia.org/wiki/Xorshift
 
+WINAPI: GetTickCount KERNEL32.DLL
+
 variable seed
-seed seed ! \ use adress of seed to initialize the seed
+GetTickCount seed !
+
 
 : Random    ( -- x )  \ return a 32-bit random number x
     seed @
