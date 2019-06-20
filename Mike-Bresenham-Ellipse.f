@@ -339,7 +339,7 @@ repeat
 
 ;
 
-: Ellipse   Dessin 2  PointSize 
+: Ellipse   Dessin 2 PointSize 
             	 
 
 100 0 do
