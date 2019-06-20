@@ -11,9 +11,6 @@ S" Dessin.f" INCLUDED
 440 constant hauteur-monde
 largeur-monde hauteur-monde * constant dim-monde
 
-fvariable p0
-fvariable p1
-
 variable pos-X
 variable pos-Y
 
