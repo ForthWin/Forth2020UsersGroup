@@ -11,8 +11,6 @@ S" Dessin.f" INCLUDED
 440 constant hauteur-monde
 largeur-monde hauteur-monde * constant dim-monde
 
-fvariable p0
-fvariable p1
 
 variable pos-X
 variable pos-Y
@@ -136,7 +134,7 @@ moore
 	largeur-monde 0 do
 	hauteur-monde 0 do
 		largeur-monde i * j + *monde @ + c@ 1 = if
-				j i yellow pixel else
+				j i blue pixel else
 		largeur-monde i * j + *monde @ + c@ 2 = if
 				j i red pixel else
 		largeur-monde i * j + *monde @ + c@ 3 = if
