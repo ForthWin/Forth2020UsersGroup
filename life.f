@@ -20,24 +20,13 @@ variable pos-Y
 0 pos-X !
 0 pos-Y !
 
-: pixel-affiche ( --)
-   s>d d>f 24e  f/ 9e F- p0 f!           \  X
-   s>d d>f 24e  f/ 5e F- p1 f!           \ Y
-   p0 f@ fto  X  
-   p1 f@ fto  Y  
-   Point
-  
+: pixel ( --)
+   s>d d>f 24e  f/ 9e F- fto  X            \  X
+   s>d d>f 24e  f/ 5e F- fto  Y           \  Y
+   Point 
 ;
 
 
-: pixel-vert
-0 100 0 Color pixel-affiche ;
-
-: pixel-rouge
-0 0 100 Color pixel-affiche ;
-
-: pixel-noir
-0 0 0 Color pixel-affiche ;
 
 
 \ ===================================
@@ -130,8 +119,8 @@ tampon *monde-buf 1 cells move
 largeur-monde 0 do
 	hauteur-monde 0 do
 		largeur-monde i * j + *monde @ + c@ 1 = if
-                j i pixel-vert else
-				j i pixel-noir
+                j i green pixel else
+				j i black pixel
 
 then
 loop loop
