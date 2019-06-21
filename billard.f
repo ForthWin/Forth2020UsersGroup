@@ -1,6 +1,6 @@
 \ -----------------------------------------------------------------------------
 \  Cellular Automata
-\  Morgolus neighborhood
+\  Margolus neighborhood
 \  Two phase gas
 \  Reversible
 \  Michel Jean June 2019
