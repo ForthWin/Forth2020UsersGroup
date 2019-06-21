@@ -5,10 +5,10 @@
 \ -----------------------------------------------------------------------------
 
 S" Rand.f" INCLUDED 
-S" Dessin.f" INCLUDED
+S" pixel.f" INCLUDED
 
-240 constant largeur-monde \
-440 constant hauteur-monde
+320 constant largeur-monde \
+200 constant hauteur-monde
 largeur-monde hauteur-monde * constant dim-monde
 
 variable pos-X
@@ -16,13 +16,6 @@ variable pos-Y
 
 0 pos-X !
 0 pos-Y !
-
-: pixel ( --)
-   s>d d>f 24e  f/ 9e F- fto  X            \  X
-   s>d d>f 24e  f/ 5e F- fto  Y           \  Y
-   Point 
-;
-
 
 
 \ ============================================
@@ -131,7 +124,7 @@ variable etat \ etat de la cellule
 
 : run
 	initialisation
-	Dessin
+	set-screen
 	dessine-monde
 	do
 		dessine-monde
