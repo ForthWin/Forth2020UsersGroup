@@ -1,5 +1,5 @@
 \ -----------------------------------------------------------------------------
-\  Cellular Automata
+\  Cellular Automaton
 \  Margolus neighborhood
 \  Two phase gas
 \  Reversible
