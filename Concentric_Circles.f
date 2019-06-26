@@ -170,18 +170,18 @@ glclose
 \ Create concentric circles situated at center (200,10) with R=100, decreasing radius by 10 
 : Concentric_Circles Dessin 2  PointSize
 
-blue 
 
-200 0 do
+green
+10 0 do 
     400 TO R
-   20 0 DO
-         200 random 200 random 200 random color
-         200 CX 20 TO CY R 10 - to R
+   35 0 DO
+         \ 200 random 200 random 200 random color
+         20 to CX 15 TO CY R 10 - to R
          Bresenham view cls
-         400 PAUSE
-        loop view
+         40 PAUSE
+        loop loop
    20000 pause
-glclose
+   glclose
            
 ;
 
