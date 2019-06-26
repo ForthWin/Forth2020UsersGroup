@@ -2,8 +2,8 @@
 \ https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
 
 
-S" demos/opengl2/PETER-OPENGL1.F" INCLUDED    \ here is the OpenGL routines
-\ REQUIRE   glOpen	demos/opengl2/PETER-OPENGL1.F    \ here is the OpenGL routines
+S" dessin.f" INCLUDED    \ here is the OpenGL routines
+S" rand.f" INCLUDED
 
 
 
@@ -151,7 +151,7 @@ REPEAT ;
 
 
 
-: circle  INIT-MY-OPENGL 2  PointSize   \ CIR1 CIR2 ;
+: circle  Dessin 2  PointSize   \ CIR1 CIR2 ;
             	 
 
 BLUE
@@ -168,7 +168,7 @@ glclose
 ;
 
 \ Create concentric circles situated at center (200,10) with R=100, decreasing radius by 10 
-: Concentric_Circles INIT-MY-OPENGL 2  PointSize
+: Concentric_Circles Dessin 2  PointSize
 
 blue 
 
@@ -177,7 +177,7 @@ blue
    20 0 DO
          200 random 200 random 200 random color
          200 CX 20 TO CY R 10 - to R
-         Bresenham  view
+         Bresenham view cls
          400 PAUSE
         loop view
    20000 pause
