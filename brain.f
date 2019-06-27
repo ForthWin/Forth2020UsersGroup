@@ -4,7 +4,6 @@
 \  Michel Jean 2019
 \ -----------------------------------------------------------------------------
 
-S" Rand.f" INCLUDED 
 S" Pixel.f" INCLUDED
 
 320 constant largeur-monde \

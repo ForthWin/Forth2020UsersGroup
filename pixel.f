@@ -1,6 +1,7 @@
 \ -----------------------------------------------------------------------------  
 \  Pixel - simulation of old school screen 320 x 200 V1.0
 \  with OpenGl for ForthWin
+\  Also include a pseudo-random generator
 \  For demo enter : star-wars
 \ -----------------------------------------------------------------------------
 
@@ -316,21 +317,20 @@ EXPORT
 
 \  xxxxxxxxxxxxxxxxxxxxxxxxxx RANDOM DEFINITION xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  
-MODULE: _RND
-
 WINAPI: GetTickCount KERNEL32.DLL
-0 VALUE RndNum  
-EXPORT
-0 VALUE RndEnd  
-: Seed ( u -> )  	TO RndNum ;
-     : RndInit ( -> )    4294967295 TO RndEnd GetTickCount Seed ;
-         : Random32 ( -> u ) RndNum 0x8088405 * 1+ DUP TO RndNum ;
-              : Random ( -> u )   RndEnd Random32 UM* NIP ;
-                   : Choose ( u -> u ) Random32 UM* NIP ;
-;MODULE
- 
- : random  choose ; 
 
+variable seed
+GetTickCount seed !
+
+
+: Random    ( -- x )  \ return a 32-bit random number x
+    seed @
+    dup 13 lshift xor
+    dup 17 rshift xor
+    dup 5  lshift xor
+    dup seed !
+    um* nip
+;
 
 \ =========================================
 \ Retro console
