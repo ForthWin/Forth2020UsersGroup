@@ -288,8 +288,11 @@ EXPORT
 : blue ( -- )
 	100 0 0 Color ;
 
+: cyan ( -- )
+	100 0 0 Color ;
+
 : yellow ( -- )
-	100 100 Color ;
+	0 100 100 Color ;
 
 : white ( -- )
 	100 100 100 Color ;
