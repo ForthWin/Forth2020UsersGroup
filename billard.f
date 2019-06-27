@@ -6,7 +6,6 @@
 \  Michel Jean June 2019
 \ -----------------------------------------------------------------------------
 
-S" Rand.f" INCLUDED 
 S" pixel.f" INCLUDED
 
 320 constant largeur-monde \
