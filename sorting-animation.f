@@ -12,10 +12,10 @@ S" pixel.f" INCLUDED
 
 
 variable ensemble nbr-elements cells allot
-variable elementA \ element arrivé
-variable elementD \ element de départ
-variable positionD \ position  départ
-variable positionA \ position arrivé
+variable elementA \ element arrivÃ©
+variable elementD \ element de dÃ©part
+variable positionD \ position  dÃ©part
+variable positionA \ position arrivÃ©
 variable compteur \ compteur pour analyse
 
 : initialise-ensemble
@@ -301,7 +301,7 @@ cr ." Six sorting algorithms!" cr
 ." For Shell sort type : S-sort" cr
 ." For Heap sort type : H-sort" cr
 ." For Merge sort type : M-sort" cr
-." For Quick sort type : B-sort" cr
+." For Quick sort type : Q-sort" cr
 ." For Insert sort type : I-sort" cr ;
 
 2drop
