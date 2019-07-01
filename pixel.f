@@ -1,4 +1,4 @@
-\ -----------------------------------------------------------------------------  
+\ -----------------------------------------------------------------------------
 \  Pixel - simulation of old school screen 320 x 200 V1.0
 \  with OpenGl for ForthWin
 \  For demo enter : star-wars
@@ -73,7 +73,7 @@ CONSTANT PIXELFORMATDESCRIPTOR
 0 VALUE pfd		\ structure for opengl
 PIXELFORMATDESCRIPTOR ALLOCATE THROW TO pfd
 0x25 pfd dwFlags !
-32 pfd cColorBits C! 
+32 pfd cColorBits C!
 pfd FREE THROW
 
 0 VALUE glhandle	\ handle window
@@ -99,13 +99,13 @@ EXPORT
 : HScreen ( -> n )
 	0 GetSystemMetrics ;
 \ Cls
-\ 
+\
 \ Number of float from float stack to data stack
 : F>FL  ( -> f ) ( F: f -> )
-	[                 
-	0x8D C, 0x6D C, 0xFC C, 
-	0xD9 C, 0x5D C, 0x00 C, 
-	0x87 C, 0x45 C, 0x00 C, 
+	[
+	0x8D C, 0x6D C, 0xFC C,
+	0xD9 C, 0x5D C, 0x00 C,
+	0x87 C, 0x45 C, 0x00 C,
 	0xC3 C, ] ;
 
 \ Number of float from float stack to data stack
@@ -144,11 +144,11 @@ EXPORT
 \ Output
 : glClose ( -> )
 	glhdc glhandle ReleaseDC 0 ExitProcess ;
-      
-    
+
+
 : glClose2 ( -> )
 	glhdc glhandle ReleaseDC  ;  \  0 ExitProcess ;
-    
+
 \ Checks if a key is pressed by a given code
 : key ( n -- flag )
 	GetAsyncKeyState ;
@@ -160,15 +160,15 @@ EXPORT
 : glOpen ( -> )
   600 800 0 0  VScreen  2 /   HScreen   2 /  40 40 \ border
   0x90000000 S" edit" DROP DUP 8 CreateWindowExA
-   \  WILL OPEN AT 1/4 SCREEN TOP LEFT 
+   \  WILL OPEN AT 1/4 SCREEN TOP LEFT
   \ 0 0 800 660 VScreen HScreen 0 0 0x90000000 S" edit" DROP DUP 8 CreateWindowExA
- 
+
   \  TO MAKE  FULL SCREEN  USE THIS LINE :
 \ 0  0  0 0  VScreen  ( 2 /  )  HScreen  ( 2 / )  0 0 0x90000000 S" edit" DROP DUP 8 CreateWindowExA
 \ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 \ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
- 
- 
+
+
 
  DUP TO glhandle GetDC TO glhdc
  pfd DUP glhdc ChoosePixelFormat glhdc SetPixelFormat DROP
@@ -260,7 +260,7 @@ EXPORT
 	0xB10 glDisable DROP ;
 
 \ 2D quadrilateral (X,Y,X1,Y1,X2,Y2,X3,Y3)
-: Tetragon ( -> ) 
+: Tetragon ( -> )
 	7 glBegin DROP
 	Y F>DL X F>DL glVertex2d DROP
 	Y1 F>DL X1 F>DL glVertex2d DROP
@@ -279,7 +279,7 @@ EXPORT
 \ STARTLOG
 
 ;MODULE  \ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
- 
+
 
 0 VALUE msec					\ for synchronization
 0 VALUE msei
@@ -288,48 +288,48 @@ EXPORT
 \ \ Checks if a key is pressed by a given code
 \  : key ( n -- flag )  	GetAsyncKeyState ;
 
-        
-: SET-DOT  .S KEY   ;   
 
-: S>F    S>D D>F ;         \ *******  this is very important  !!! 
+: SET-DOT  .S KEY   ;
+
+: S>F    S>D D>F ;         \ *******  this is very important  !!!
 \ ----------------------------------------------------------------
 
 
 : Dessin   \ start the routine
 
-\ --------------------------------------: main ( -- ) 
-       glOpen						 
-          GlLine						 
-              Smoothing					 
-                   HideCursore				 
-                         SingleMatrix					 
-           0.0E 0.0E -5.0E ShiftMatrix			 
-              theta 0.0E 0.0E 1.0E RotatedMatrix  
+\ --------------------------------------: main ( -- )
+       glOpen
+          GlLine
+              Smoothing
+                   HideCursore
+                         SingleMatrix
+           0.0E 0.0E -5.0E ShiftMatrix
+              theta 0.0E 0.0E 1.0E RotatedMatrix
                   TIMER@ DROP TO msei  msei msec <> IF   msei TO msec
-      Cls		
-            \ 200 200 100 Color                
-            \ 1  PointSize	        \ *****   size of each pixel ! 
+      Cls
+            \ 200 200 100 Color
+            \ 1  PointSize	        \ *****   size of each pixel !
             \ VIEW
 \ -----------------------ATTENTION HERE  -------------------------
 
 ;
 
-\  xxxxxxxxxxxxxxxxxxxxxxxxxx RANDOM DEFINITION xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 
+\  xxxxxxxxxxxxxxxxxxxxxxxxxx RANDOM DEFINITION xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 MODULE: _RND
 
 WINAPI: GetTickCount KERNEL32.DLL
-0 VALUE RndNum  
+0 VALUE RndNum
 EXPORT
-0 VALUE RndEnd  
+0 VALUE RndEnd
 : Seed ( u -> )  	TO RndNum ;
      : RndInit ( -> )    4294967295 TO RndEnd GetTickCount Seed ;
          : Random32 ( -> u ) RndNum 0x8088405 * 1+ DUP TO RndNum ;
               : Random ( -> u )   RndEnd Random32 UM* NIP ;
                    : Choose ( u -> u ) Random32 UM* NIP ;
 ;MODULE
- 
- : random  choose ; 
+
+ : random  choose ;
 
 
 \ =========================================
@@ -347,28 +347,28 @@ Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
 	Point
  ;
 
-: draw-line ( X Y X1 Y1 -- ) 
-	s>d d>f 20e  f/ 50e-1 f- fto  Y1           
-    s>d d>f 20e  f/ 80e-1 f- fto  X1           
-    s>d d>f 20e  f/ 50e-1 f- fto  Y            
-    s>d d>f 20e  f/ 80e-1 f- fto  X           
+: draw-line ( X Y X1 Y1 -- )
+	s>d d>f 20e  f/ 50e-1 f- fto  Y1
+    s>d d>f 20e  f/ 80e-1 f- fto  X1
+    s>d d>f 20e  f/ 50e-1 f- fto  Y
+    s>d d>f 20e  f/ 80e-1 f- fto  X
 	Line
  ;
-: draw-rectangle ( X Y X1 Y1 -- ) 
-	s>d d>f 20e  f/ 50e-1 f- fto  Y1           
-    s>d d>f 20e  f/ 80e-1 f- fto  X1           
-    s>d d>f 20e  f/ 50e-1 f- fto  Y            
-    s>d d>f 20e  f/ 80e-1 f- fto  X           
+: draw-rectangle ( X Y X1 Y1 -- )
+	s>d d>f 20e  f/ 50e-1 f- fto  Y1
+    s>d d>f 20e  f/ 80e-1 f- fto  X1
+    s>d d>f 20e  f/ 50e-1 f- fto  Y
+    s>d d>f 20e  f/ 80e-1 f- fto  X
 	Rectangle
 ;
 
-: draw-triangle ( X Y X1 Y1 -- ) 
-	s>d d>f 20e  f/ 50e-1 f- fto  Y2           
+: draw-triangle ( X Y X1 Y1 -- )
+	s>d d>f 20e  f/ 50e-1 f- fto  Y2
     s>d d>f 20e  f/ 80e-1 f- fto  X2
-	s>d d>f 20e  f/ 50e-1 f- fto  Y1           
-    s>d d>f 20e  f/ 80e-1 f- fto  X1           
-    s>d d>f 20e  f/ 50e-1 f- fto  Y            
-    s>d d>f 20e  f/ 80e-1 f- fto  X           
+	s>d d>f 20e  f/ 50e-1 f- fto  Y1
+    s>d d>f 20e  f/ 80e-1 f- fto  X1
+    s>d d>f 20e  f/ 50e-1 f- fto  Y
+    s>d d>f 20e  f/ 80e-1 f- fto  X
 	Triangle
 ;
 
@@ -377,58 +377,61 @@ Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
 : green ( -- ) \ light-green
 	0 100 0 Color ;
 
-: dark-green ( -- ) 
+: dark-green ( -- )
 	0 300 0 Color ;
-	
-: red ( -- ) 
+
+: red ( -- )
 	0 0 100 Color ;
 
-: blue ( -- ) 
+: blue ( -- )
 	100 0 0 Color ;
 
-: yellow ( -- ) 
-	100 100 Color ;
+: cyan ( -- )
+	100 100 0 Color ;
 
-: white ( -- ) 
+: yellow ( -- )
+	0 100 100 Color ;
+
+: white ( -- )
 	100 100 100 Color ;
 
-: black ( -- ) 
+: black ( -- )
 	0 0 0 Color ;
 
 \ ===============================================
 \ Demo Affichage Star Wars ;-)
 \ ===============================================
 
-: stars ( -- ) 
+: stars ( -- )
 	50 0 do 320 Random 200 random pixel loop ;
 
 : sight ( -- )
-	150 0 150 200 draw-line \ vertical line 
-	170 0 170 200 draw-line 
+	150 0 150 200 draw-line \ vertical line
+	170 0 170 200 draw-line
 ;
 
-: grid ( -- ) 
+: grid ( -- )
 	20 20 300 180 draw-rectangle
 	120 80 200 120 draw-rectangle
 	70 50 250 150 draw-rectangle
-	20 20 120 80 draw-line 
+	20 20 120 80 draw-line
 	20 180 120 120 draw-line
 	300 180 200 120 draw-line
 	300 20 200 80 draw-line
-	120 100 200 100 draw-line 
-    160 80 160 120 draw-line 
+	120 100 200 100 draw-line
+    160 80 160 120 draw-line
 ;
 
 : ship ( -- ) \ filled triangle
-	GlFill 70 30 95 105 270 170 draw-triangle 
+	GlFill 70 30 95 105 270 170 draw-triangle
 	GlLine
 ;
 
 
 : star-wars \ print all
 	set-screen
-	white stars green stars 
-	dark-green ship 
+	white stars green stars
+	dark-green ship
 	yellow grid red sight
 	view 1
 
@@ -436,5 +439,5 @@ Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
 
  \ star-wars
  \ 10000 pause          \ 10 seconds before closing OPENgl
- \ glclose  
+ \ glclose
 
