@@ -304,7 +304,6 @@ cr ." Six sorting algorithms!" cr
 ." For Quick sort type : Q-sort" cr
 ." For Insert sort type : I-sort" cr ;
 
-2drop
 run
  
  
