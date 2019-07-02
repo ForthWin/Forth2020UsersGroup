@@ -150,8 +150,8 @@ EXPORT
 	glhdc glhandle ReleaseDC  ;  \  0 ExitProcess ;
 
 \ Checks if a key is pressed by a given code
-: key ( n -- flag )
-	GetAsyncKeyState ;
+\ : key ( n -- flag )
+\	GetAsyncKeyState ;
 
 
 \ &&&&&&&&&&&&&&&&&&&&&       SCREEN  SIZE   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -184,7 +184,9 @@ EXPORT
 
  \ Show image buffer (where we drew)
 : View ( -> )
-	glhdc SwapBuffers DROP ;
+	glhdc SwapBuffers DROP
+	Cls
+	;
 
 \ The unit matrix
 : SingleMatrix ( -> )
@@ -307,12 +309,9 @@ EXPORT
               theta 0.0E 0.0E 1.0E RotatedMatrix
                   TIMER@ DROP TO msei  msei msec <> IF   msei TO msec
       Cls
-            \ 200 200 100 Color
-            \ 1  PointSize	        \ *****   size of each pixel !
-            \ VIEW
-\ -----------------------ATTENTION HERE  -------------------------
-
 ;
+
+
 \ ==================== Random ====================================
 
 WINAPI: GetTickCount KERNEL32.DLL
@@ -335,6 +334,37 @@ GetTickCount seed !
 \ Retro console
 \ 320 x 200
 \ =========================================
+\ basic retro colors
+
+: green ( -- ) \ light-green
+	0 100 0 Color ;
+
+: dark-green ( -- )
+	0 300 0 Color ;
+
+: red ( -- )
+	0 0 100 Color ;
+
+: blue ( -- )
+	100 0 0 Color ;
+
+: cyan ( -- )
+	100 100 0 Color ;
+
+: yellow ( -- )
+	0 100 100 Color ;
+	
+: pink ( -- )
+	100 20 100 Color ;
+
+: orange ( -- )
+	0 75 100 Color ;
+
+: white ( -- )
+	100 100 100 Color ;
+
+: black ( -- )
+	0 0 0 Color ;
 
 : set-screen \ show the screen and set pixel dimension
 Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
@@ -370,43 +400,227 @@ Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
     s>d d>f 20e  f/ 80e-1 f- fto  X
 	Triangle
 ;
+\ ================ Circle and Ellipse ============================
+\ variables for plotting circle
+0 value PC_X
+0 value PC_Y
+0 value CX
+0 value CY
+0 value R
+0 value pc_d
 
-\ basic retro colors
+: DrawCircle
 
-: green ( -- ) \ light-green
-	0 100 0 Color ;
+CX PC_X +   CY PC_Y +  pixel
+CX PC_X -   CY PC_Y +  pixel
+CX PC_X -   CY PC_Y -  pixel
+CX PC_X +   CY PC_Y -  pixel
+CX PC_Y +   CY PC_X +  pixel
+CX PC_Y -   CY PC_X +  pixel
+CX PC_Y -   CY PC_X -  pixel
+CX PC_Y +   CY PC_X -  pixel
+;
 
-: dark-green ( -- )
-	0 300 0 Color ;
+: Bresenham-Cercle
+0 TO PC_X
+R TO PC_Y
+3 2 R * - to pc_d \ pc_d = 3-2*R
+DrawCircle
 
-: red ( -- )
-	0 0 100 Color ;
+BEGIN
+   PC_Y PC_X < NOT \ WHILE PC_Y >= PC_X
+WHILE
+     \ For each pixel we will draw 8 pixels
+     PC_X 1+ TO PC_X   \ PC_X = PC_X+1
+     \ check for decision parameter and correspondingly update d, PC_X and PC_Y
+     pc_d 0 >   \ if pc_d>0
+     if
+       PC_Y 1- TO PC_Y \ PC_Y = PC_Y -1
+       pc_d 4  PC_X PC_Y - * + 10 + to pc_d  \ pc_d = pc_d + 4*(PC_X - PC_Y) + 10
+     else
+       pc_d 4 PC_X * 6 + + to pc_d   \ pc_d = pc_d + 4*PC_X + 6
+     then
+     DrawCircle
+REPEAT ;
 
-: blue ( -- )
-	100 0 0 Color ;
+\ =====================================
+\ variables for plotting ellipse
+0 value Xchange
+0 value Ychange
+0 value PE_X
+0 value PE_Y
+0 value EllipseError
+0 value TwoASquare
+0 value TwoBSquare
+0 value StoppingX
+0 value StoppingY
+0 value Xradius
+0 value Yradius
 
-: cyan ( -- )
-	100 100 0 Color ;
-	
-: yellow ( -- )
-	0 100 100 Color ;
 
-: white ( -- )
-	100 100 100 Color ;
+0e0  fvalue xn  0e0 fvalue yn
 
-: black ( -- )
-	0 0 0 Color ;
+
+create sinus
+     0 ,  1745 ,  3490 ,  5234 ,  6976 ,  8716 , 10453 , 12187 , 13917 ,
+ 15643 , 17365 , 19081 , 20791 , 22495 , 24192 , 25882 , 27564 , 29237 ,
+ 30902 , 32567 , 34202 , 35837 , 37461 , 39073 , 40674 , 42262 , 43837 ,
+ 45399 , 46947 , 48481 , 50000 , 51504 , 52992 , 54464 , 55919 , 57358 ,
+ 58779 , 60182 , 61566 , 62932 , 64279 , 65606 , 66913 , 68200 , 69466 ,
+ 70711 , 71934 , 73135 , 74314 , 75471 , 76604 , 77715 , 78801 , 79864 ,
+ 80902 , 81915 , 82904 , 83867 , 84805 , 85717 , 86603 , 87462 , 88295 ,
+ 89101 , 89879 , 90631 , 91355 , 92050 , 92718 , 93358 , 93969 , 94552 ,
+ 95106 , 95630 , 96126 , 96593 , 97030 , 97437 , 97815 , 98163 , 98481 ,
+ 98769 , 99027 , 99255 , 99452 , 99619 , 99756 , 99863 , 99939 , 99985 ,
+100000 ,
+
+: (sinus)  4 * sinus + @ ;   ( angle - unsigned_sin*100000 )
+
+: sin  ( angle - sin*100000 )
+   dup abs dup
+   360 > if  360 mod
+         then dup
+         91 < if (sinus)                                 \ < 90
+              else dup 181 <
+                   if 180 - abs (sinus)                   \ 91 - 179
+                   else dup 271 <
+                        if 180 - (sinus) negate            \ 180 - 269
+                        else 360 - abs (sinus) negate      \ 270 - 360
+                        then
+                    then
+                then
+   swap 0< if negate
+           then
+ ;
+\ 90 sin .s abort
+: cos          ( angle - cos*100000 )
+   90 - dup 0 > >r
+   abs sin r>
+       if negate then
+ ;
+
+
+: Plot4EllipsePoints
+CX PE_X  + CY PE_Y +  pixel
+CX PE_X  - CY PE_Y +  pixel
+CX PE_X  - CY PE_Y -  pixel
+CX PE_X  + CY PE_Y -  pixel
+;
+
+: Bresenham_Ellipse ( cx, cy, Xradius, Yradius -- ) \ Start Bresenham Ellipse algorithm
+
+Xradius dup * 2 * to TwoASquare  \ TwoASquare = 2*Xradius*Xradius
+Yradius dup * 2 * to TwoBSquare  \ TwoBSquare = 2*Yradius*Yradius
+
+Xradius to PE_X    \ PE_X = Xradius
+0       to PE_Y    \ PE_y = 0
+Yradius dup * 1 2 Xradius * - * to Xchange \ Xchange = Yradius*Yradius*(1-2*Xradius)
+Xradius dup * to Ychange                   \ Ychange = Xradius*Xradius
+0 to EllipseError                          \ EllipseError = 0
+TwoBSquare Xradius * to StoppingX          \ StoppingX = TwoSquare*Xradius
+0                    to StoppingY          \ StoppingY = 0
+
+Begin
+
+   StoppingX StoppingY < NOT
+
+While \ While StoppingX >= StoppingY
+
+  Plot4EllipsePoints ( PE_X, PE_Y )
+  PE_Y 1+ to PE_Y   \ PE_Y = PE_Y + 1
+   StoppingY TwoASquare + to StoppingY       \ Stoppingx = StoppingX + TwoASquare
+   EllipseError Ychange + to EllipseError    \ EllipseError = EllipseError + Ychange
+   Ychange TwoASquare +   to Ychange         \ Ychange = Ychange + TwoASquare
+
+   2 EllipseError * Xchange + 0 >
+   if \ if 2*EllipseError + Xchange > 0
+      PE_X 1- to PE_X                        \ PE_X = PE_X - 1
+      StoppingX TwoBSquare - to StoppingX    \ StoppingX = StoppingX - TwoBSquare
+      EllipseError Xchange + to EllipseError \ EllipseError = EllipseError + Xchange
+      Xchange TwoBSquare +   to Xchange      \ Xchange = Xchange + TwoBSquare
+   then
+
+Repeat
+
+\ 1st point set is done; start the 2nd set of points
+
+0 to PE_X                                   \ PE_X = 0
+YRadius to PE_Y                             \ PE_Y = Yradius
+Yradius dup * to Xchange                    \ Xchange = Yradius*Yradius
+Xradius dup * 1 2 Yradius * - * to Ychange  \ Ychange = Xradius*Xradius*(1-2*Yradius)
+0 to EllipseError                           \ EllipseError = 0
+0 to StoppingX                              \ StoppingX = 0
+TwoASquare Yradius * to StoppingY           \ StoppingY = TwoASquare * Yradius
+
+Begin
+
+StoppingX StoppingY > NOT
+
+While  \ while StoppingX <= StoppingY
+     Plot4EllipsePoints
+     PE_X 1+ to PE_X                         \ PE_X = PE_X + 1
+      StoppingX TwoBSquare + to StoppingX    \ StoppingX = StoppingX + TwoBSquare
+      EllipseError Xchange + to EllipseError \ EllipseError = EllipseError + Xchange
+      Xchange  TwoBSquare  + to Xchange      \ Xchange = Xchange + TwoBSquare
+
+      2 EllipseError * Ychange + 0 >
+      if      \  if  2*EllipseError + Ychange > 0
+          PE_Y 1- TO PE_Y                        \ PE_Y = PE_Y - 1
+          StoppingY TwoASquare - to StoppingY    \ StoppingY = StoppingY - TwoASquare
+          EllipseError Ychange + to EllipseError \ EllipseError = EllipseError + Ychange
+          Ychange TwoASquare   + to Ychange      \ Ychange= Ychange + TwoASquare
+      then
+repeat
+;
+
+: draw-circle ( X Y R )
+	TO R TO CY TO CX
+	Bresenham-Cercle ;
+
+: draw-ellipse ( X Y Xradius Yradius )
+	TO yradius TO xradius TO CY TO CX
+	Bresenham_Ellipse ;
+
+2drop
+
 
 \ ===============================================
-\ Demo Affichage Star Wars ;-)
+\ Demo Affichage Star-Wars ;-)
 \ ===============================================
+variable pos-stars 100 cells allot
+
+: create-stars ( -- )
+50 0 do
+	320 Random pos-stars i 2 * cells + !
+	200 Random pos-stars i 2 * 1 + cells + ! loop ;
 
 : stars ( -- )
-	50 0 do 320 Random 200 random pixel loop ;
+	50 0 do
+	i 2 * cells pos-stars + @
+	i 2 * 1 + cells pos-stars + @
+	pixel loop ;
 
 : sight ( -- )
 	150 0 150 200 draw-line \ vertical line
 	170 0 170 200 draw-line
+;
+
+: Death-Star
+	230 140 30 50 draw-ellipse
+	230 140 10 50 draw-ellipse
+	230 140 50 50 draw-ellipse
+	230 140 50 30 draw-ellipse
+	230 140 50 10 draw-ellipse
+	230 90 230 190 draw-line
+;
+
+: Death-Star2
+	230 140 40 50 draw-ellipse
+	230 140 20 50 draw-ellipse
+	230 140 50 50 draw-ellipse
+	230 140 50 30 draw-ellipse
+	230 140 50 10 draw-ellipse
+	230 90 230 190 draw-line
 ;
 
 : grid ( -- )
@@ -418,24 +632,47 @@ Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
 	300 180 200 120 draw-line
 	300 20 200 80 draw-line
 	120 100 200 100 draw-line
-    160 80 160 120 draw-line
+	160 80 160 120 draw-line
 ;
 
 : ship ( -- ) \ filled triangle
 	GlFill 70 30 95 105 270 170 draw-triangle
 	GlLine
-;
+ ;
+
+: star-wars
+set-screen
+create-stars
+10 0 do
+\ 180 TO R
+	17 0 do
+	\ 160 to CX 100 TO CY R 10 - to R
+	        white stars
+		cyan Death-star
+		dark-green ship
+		yellow grid
+	    yellow 160 100 170 i 10 * - draw-circle
+	    red 160 100 18 draw-circle
+	    red sight
+	    view
+	    50 pause
+		white stars
+		cyan Death-star2
+		dark-green ship
+		yellow grid
+	    yellow 160 100 170 i 10 * - draw-circle
+	    red 160 100 18 draw-circle
+	    red sight
+	    view
+	    50 PAUSE
+        loop loop
+	;
+
+\ star-wars
 
 
-: star-wars \ print all
-	set-screen
-	white stars green stars
-	dark-green ship
-	yellow grid red sight
-	view 1
-;
 
- \ star-wars
- \ 10000 pause          \ 10 seconds before closing OPENgl
- \ glclose
+
+
+
 
