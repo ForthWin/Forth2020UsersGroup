@@ -150,8 +150,8 @@ EXPORT
 	glhdc glhandle ReleaseDC  ;  \  0 ExitProcess ;
 
 \ Checks if a key is pressed by a given code
-: key ( n -- flag )
-	GetAsyncKeyState ;
+\ : key ( n -- flag )
+\	GetAsyncKeyState ;
 
 
 \ &&&&&&&&&&&&&&&&&&&&&       SCREEN  SIZE   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -184,7 +184,9 @@ EXPORT
 
  \ Show image buffer (where we drew)
 : View ( -> )
-	glhdc SwapBuffers DROP ;
+	glhdc SwapBuffers DROP
+	Cls
+	;
 
 \ The unit matrix
 : SingleMatrix ( -> )
@@ -307,12 +309,9 @@ EXPORT
               theta 0.0E 0.0E 1.0E RotatedMatrix
                   TIMER@ DROP TO msei  msei msec <> IF   msei TO msec
       Cls
-            \ 200 200 100 Color
-            \ 1  PointSize	        \ *****   size of each pixel !
-            \ VIEW
-\ -----------------------ATTENTION HERE  -------------------------
-
 ;
+
+
 \ ==================== Random ====================================
 
 WINAPI: GetTickCount KERNEL32.DLL
@@ -359,7 +358,7 @@ GetTickCount seed !
 	100 100 100 Color ;
 
 : black ( -- )
- 0	0 0 Color ;
+	0 0 0 Color ;
 
 : set-screen \ show the screen and set pixel dimension
 Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
@@ -395,8 +394,7 @@ Dessin 3 dup LineSize PointSize \ dimension of the pixel and line
     s>d d>f 20e  f/ 80e-1 f- fto  X
 	Triangle
 ;
-
-
+\ ================ Circle and Ellipse ============================
 \ variables for plotting circle
 0 value PC_X
 0 value PC_Y
@@ -443,10 +441,8 @@ REPEAT ;
 \ variables for plotting ellipse
 0 value Xchange
 0 value Ychange
-0 value RadiusError
 0 value PE_X
 0 value PE_Y
-0 value RadiusError
 0 value EllipseError
 0 value TwoASquare
 0 value TwoBSquare
@@ -458,29 +454,6 @@ REPEAT ;
 
 0e0  fvalue xn  0e0 fvalue yn
 
-
-\ CODE FOR MISSING 0>
-: 0>  0 > ;
-
-
-\ ------------------------------------------
-\ code for missing >=
-\ ------------------------------------------
-: >= ( n1 n2 -- flag )
-  2dup >   \ copy both numbers, test for >
-  rot rot  \ bring original 2 numbers to tos
-  =        \ test for =
-  or       \ or both flags for either or
-;
-
-\ missing <=
-: <=  2dup < rot rot = or ;
- : F> F< 0= ;
- : F>S  ( --n) F>D  D>S  ;    \   float to integer)
-
-: F2DUP         ( fs: r1 r2 -- r1 r2 r1 r2 )       \ W32F          Floating extra
-\ *G Duplicate the top 2 FP stack entries.
-                fover fover ;
 
 create sinus
      0 ,  1745 ,  3490 ,  5234 ,  6976 ,  8716 , 10453 , 12187 , 13917 ,
@@ -515,7 +488,7 @@ create sinus
  ;
 \ 90 sin .s abort
 : cos          ( angle - cos*100000 )
-   90 - dup 0> >r
+   90 - dup 0 > >r
    abs sin r>
        if negate then
  ;
@@ -545,7 +518,7 @@ TwoBSquare Xradius * to StoppingX          \ StoppingX = TwoSquare*Xradius
 
 Begin
 
-   StoppingX StoppingY >=
+   StoppingX StoppingY < NOT
 
 While \ While StoppingX >= StoppingY
 
@@ -555,7 +528,7 @@ While \ While StoppingX >= StoppingY
    EllipseError Ychange + to EllipseError    \ EllipseError = EllipseError + Ychange
    Ychange TwoASquare +   to Ychange         \ Ychange = Ychange + TwoASquare
 
-   2 EllipseError * Xchange + 0>
+   2 EllipseError * Xchange + 0 >
    if \ if 2*EllipseError + Xchange > 0
       PE_X 1- to PE_X                        \ PE_X = PE_X - 1
       StoppingX TwoBSquare - to StoppingX    \ StoppingX = StoppingX - TwoBSquare
@@ -577,7 +550,7 @@ TwoASquare Yradius * to StoppingY           \ StoppingY = TwoASquare * Yradius
 
 Begin
 
-StoppingX StoppingY <=
+StoppingX StoppingY > NOT
 
 While  \ while StoppingX <= StoppingY
      Plot4EllipsePoints
@@ -586,7 +559,7 @@ While  \ while StoppingX <= StoppingY
       EllipseError Xchange + to EllipseError \ EllipseError = EllipseError + Xchange
       Xchange  TwoBSquare  + to Xchange      \ Xchange = Xchange + TwoBSquare
 
-      2 EllipseError * Ychange + 0>
+      2 EllipseError * Ychange + 0 >
       if      \  if  2*EllipseError + Ychange > 0
           PE_Y 1- TO PE_Y                        \ PE_Y = PE_Y - 1
           StoppingY TwoASquare - to StoppingY    \ StoppingY = StoppingY - TwoASquare
@@ -596,6 +569,15 @@ While  \ while StoppingX <= StoppingY
 repeat
 ;
 
+: draw-circle ( X Y R )
+	TO R TO CY TO CX
+	Bresenham-Cercle ;
+
+: draw-ellipse ( X Y Xradius Yradius )
+	TO yradius TO xradius TO CY TO CX
+	Bresenham_Ellipse ;
+
+2drop
 
 
 \ ===============================================
@@ -620,21 +602,23 @@ variable pos-stars 100 cells allot
 ;
 
 : Death-Star
-50 to xradius 50 to yradius Bresenham_Ellipse
-50 to xradius 30 to yradius Bresenham_Ellipse
-50 to xradius 10 to yradius Bresenham_Ellipse
-30 to xradius 50 to yradius Bresenham_Ellipse
-10 to xradius 50 to yradius Bresenham_Ellipse
-160 50 160 150 draw-line
+230 140 30 50 draw-ellipse
+230 140 10 50 draw-ellipse
+230 140 50 50 draw-ellipse
+230 140 50 30 draw-ellipse
+230 140 50 10 draw-ellipse
+230 90 230 190 draw-line
 ;
+
 : Death-Star2
-50 to xradius 50 to yradius Bresenham_Ellipse
-50 to xradius 30 to yradius Bresenham_Ellipse
-50 to xradius 10 to yradius Bresenham_Ellipse
-40 to xradius 50 to yradius Bresenham_Ellipse
-20 to xradius 50 to yradius Bresenham_Ellipse
-160 50 160 150 draw-line
+230 140 40 50 draw-ellipse
+230 140 20 50 draw-ellipse
+230 140 50 50 draw-ellipse
+230 140 50 30 draw-ellipse
+230 140 50 10 draw-ellipse
+230 90 230 190 draw-line
 ;
+
 : grid ( -- )
 	20 20 300 180 draw-rectangle
 	120 80 200 120 draw-rectangle
@@ -647,28 +631,36 @@ variable pos-stars 100 cells allot
 	160 80 160 120 draw-line
 ;
 
-\ : ship ( -- ) \ filled triangle
-\	GlFill 70 30 95 105 270 170 draw-triangle
-\	GlLine
-\ ;
+: ship ( -- ) \ filled triangle
+	GlFill 70 30 95 105 270 170 draw-triangle
+	GlLine
+ ;
 
 : star-wars
 set-screen
 create-stars
 10 0 do
-160 TO R
-	16 0 do
-	160 to CX 100 TO CY R 10 - to R
+\ 180 TO R
+	17 0 do
+	\ 160 to CX 100 TO CY R 10 - to R
 	        white stars
 		cyan Death-star
-		yellow grid red sight
-	    yellow Bresenham-Cercle view cls
+		dark-green ship
+		yellow grid
+	    yellow 160 100 170 i 10 * - draw-circle
+	    red 160 100 18 draw-circle
+	    red sight
+	    view
 	    50 pause
 		white stars
 		cyan Death-star2
-		yellow grid red sight
-	    yellow Bresenham-Cercle view cls
-         50 PAUSE
+		dark-green ship
+		yellow grid
+	    yellow 160 100 170 i 10 * - draw-circle
+	    red 160 100 18 draw-circle
+	    red sight
+	    view
+	    50 PAUSE
         loop loop
 	;
 
