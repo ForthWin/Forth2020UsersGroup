@@ -353,6 +353,12 @@ GetTickCount seed !
 
 : yellow ( -- )
 	0 100 100 Color ;
+	
+: pink ( -- )
+	100 20 100 Color ;
+
+: orange ( -- )
+	0 75 100 Color ;
 
 : white ( -- )
 	100 100 100 Color ;
@@ -602,21 +608,21 @@ variable pos-stars 100 cells allot
 ;
 
 : Death-Star
-230 140 30 50 draw-ellipse
-230 140 10 50 draw-ellipse
-230 140 50 50 draw-ellipse
-230 140 50 30 draw-ellipse
-230 140 50 10 draw-ellipse
-230 90 230 190 draw-line
+	230 140 30 50 draw-ellipse
+	230 140 10 50 draw-ellipse
+	230 140 50 50 draw-ellipse
+	230 140 50 30 draw-ellipse
+	230 140 50 10 draw-ellipse
+	230 90 230 190 draw-line
 ;
 
 : Death-Star2
-230 140 40 50 draw-ellipse
-230 140 20 50 draw-ellipse
-230 140 50 50 draw-ellipse
-230 140 50 30 draw-ellipse
-230 140 50 10 draw-ellipse
-230 90 230 190 draw-line
+	230 140 40 50 draw-ellipse
+	230 140 20 50 draw-ellipse
+	230 140 50 50 draw-ellipse
+	230 140 50 30 draw-ellipse
+	230 140 50 10 draw-ellipse
+	230 90 230 190 draw-line
 ;
 
 : grid ( -- )
@@ -639,7 +645,7 @@ variable pos-stars 100 cells allot
 : star-wars
 set-screen
 create-stars
-10 0 do
+50 0 do
 \ 180 TO R
 	17 0 do
 	\ 160 to CX 100 TO CY R 10 - to R
@@ -664,7 +670,7 @@ create-stars
         loop loop
 	;
 
-star-wars
+\ star-wars
 
 
 
