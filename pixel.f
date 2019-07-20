@@ -287,11 +287,11 @@ EXPORT
 0 VALUE msei
 0.0E FVALUE theta				\ matrix rotation angle
 
-\ \ Checks if a key is pressed by a given code
-\  : key ( n -- flag )  	GetAsyncKeyState ;
-
-
-: SET-DOT  .S KEY   ;
+\ \ Checks if a key is pressed and return value of the key
+: ReadKey ( -- n )
+BEGIN
+	key? if key exit then
+AGAIN ;
 
 : S>F    S>D D>F ;         \ *******  this is very important  !!!
 \ ----------------------------------------------------------------
@@ -353,7 +353,7 @@ GetTickCount seed !
 
 : yellow ( -- )
 	0 100 100 Color ;
-	
+
 : pink ( -- )
 	100 20 100 Color ;
 
