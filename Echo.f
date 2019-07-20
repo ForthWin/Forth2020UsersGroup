@@ -140,15 +140,21 @@ moore
 ;
 
 : run
+
 	initialisation
 	set-screen
 	dessine-monde
-	do
+	BEGIN
 	dessine-monde
 	regenere-monde
 	view
+	key? if key 83 = if cr exit then then
 	10 pause
-	loop
+	AGAIN
 ;
 
-run 
+: depart
+	cr ." Type run to start"
+	cr ." Type s to stop" cr ;
+
+depart
