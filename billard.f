@@ -199,7 +199,7 @@ loop loop
 ;
 
 : propagation
-	do
+	BEGIN
 	dessine-monde
 	view
 	1 pause
@@ -208,13 +208,19 @@ loop loop
 	view
 	1 pause
 	regenere-mondeB
-	loop
+	key? if key 83 = if cr exit then then
+	AGAIN
+	glclose
 ;
 
 : run
+	cr ." Presse any key to start"
+	cr ." Type s to stop" cr
 	depart
-	1000 pause
+	Readkey \ whait for a key and read it
+	cr drop \ because ascii number is in the stack
 	propagation
+
 ;
 
-run 
+run
