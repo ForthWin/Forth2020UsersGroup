@@ -4,9 +4,9 @@
 \ ---------------------------------------------------------------------------------------
 
 
-S" lib\include\float2.f" INCLUDED
+\ S" lib\include\float2.f" INCLUDED  .. better to use REQUIRE as possible
 
-
+REQUIRE  SFLOATS     lib\include\float2.f
 
 MODULE: HIDDEN  \   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
