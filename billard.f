@@ -208,7 +208,7 @@ loop loop
 	view
 	1 pause
 	regenere-mondeB
-	key? if key 83 = if cr exit then then
+	\ key? if key 83 = if cr exit then then
 	AGAIN
 	glclose
 ;
@@ -217,8 +217,9 @@ loop loop
 	cr ." Presse any key to start"
 	cr ." Type s to stop" cr
 	depart
-	Readkey \ whait for a key and read it
-	cr drop \ because ascii number is in the stack
+	1000 pause
+	\ Readkey \ whait for a key and read it
+	\ cr drop \ because ascii number is in the stack
 	propagation
 
 ;
