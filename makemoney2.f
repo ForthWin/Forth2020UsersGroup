@@ -8,8 +8,8 @@
 : makemoney count signed unnumber ( check what's going on after the decimal point
 								  make3 case 0 of endof ( no decimal point )
 										     1 of endof ( nothing after the decimal point )
-										     2 of 1+ 1 unnumber drop drop drop 10 * swap endof (1 digit after the decimal point )
-											 3 of 1+ 2 unnumber drop drop drop swap endof (2 or more digits after the decimal point, doesn't round just cuts it off after the second digit )
+										     2 of 1+ 1 unnumber drop drop drop 10 * swap endof ( 1 digit after the decimal point )
+											 3 of 1+ 2 unnumber drop drop drop swap endof ( 2 or more digits after the decimal point, doesn't round just cuts it off after the second digit )
 										 endcase drop swap 100 * + * ;
 \ testmoney...
 
