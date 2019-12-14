@@ -25,6 +25,7 @@ S" -1234.567" $var amount10
 									
  amount1  dup $. space makemoney . CR
  amount2  dup $. space makemoney . CR
+ amount3  dup $. space makemoney . CR
  amount4  dup $. space makemoney . CR
  amount5  dup $. space makemoney . CR
  amount6  dup $. space makemoney . CR
