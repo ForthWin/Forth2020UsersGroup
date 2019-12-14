@@ -20,10 +20,9 @@ S" 1234.567" $var amount5
 S" -1234" $var amount6
 S" -1234.56" $var amount7
 S" -1234." $var amount8
+S" -1234.5" $var amount9
 S" -1234.567" $var amount10
-S" 1234.5" $var amount9
-S" -1234.5" $var amount10
-										
+									
  amount1  dup $. space makemoney . CR
  amount2  dup $. space makemoney . CR
  amount4  dup $. space makemoney . CR
