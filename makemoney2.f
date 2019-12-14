@@ -1,15 +1,19 @@
-\ makemoney 2.0 - written by Leendert A. Hartog
+\ makemoney 2.1 - written by Leendert A. Hartog
 
 : $var create dup here swap over c! over 1+ allot 1+ swap cmove does> ;
 : $. count type ;
 : unnumber 0 0 2swap >number ;
 : signed ( check if the first char is a minus sign if so ignore first char and leave -1 on the stack else leave 1 ) over c@ 45 = if swap 1+ swap 1- -1 rot rot else 1 rot rot then ;
 : make3 ( if value > 3 make it 3 ) dup 3 > if 3 swap drop then ;
-: makemoney count signed unnumber make3 case 0 of endof 
-								             1 of endof
-                                             2 of 1+ 1 unnumber drop drop drop 10 * swap endof
-											 3 of 1+ 2 unnumber drop drop drop swap endof 
-										 endcase drop swap 100 * + * ;
+: makemoney count signed unnumber ( get the number before the decimal point )
+( now the last number on the stack denotes what's going on after the decimal point) 
+make3 ( change it to 3 if > 3 )
+case 
+ 0 of endof ( no decimal point )
+ 1 of endof ( nothing after the decimal point )
+ 2 of 1+ 1 unnumber drop drop drop 10 * swap endof ( 1 digit after the decimal point )
+ 3 of 1+ 2 unnumber drop drop drop swap endof ( 2 or more digits after the decimal point... reads only 2 of them, ignores the rest )
+endcase drop swap 100 * + * ;
 \ testmoney...
 
 S" 1234" $var amount1
