@@ -1,3 +1,6 @@
+\ makemoney 2.1 - written by Leendert A. Hartog
+\ modifications by Iruatä Souza
+
 : str, ( a u -- )     dup c,  here  over allot  swap cmove ;
 : $var ( a u -- )     create str, ;
 : $.   ( 'var -- )    count type ;
