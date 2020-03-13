@@ -1,7 +1,7 @@
 \ -----------------------------------------------------------------------------
 \  Brain's Brain
 \  Cellular Automata
-\  Michel Jean 2019
+\  Michel Jean 2019 update mars 2020
 \ -----------------------------------------------------------------------------
 
 
@@ -190,4 +190,5 @@ variable etat
 ." Type run to start" cr
 ." Press any key to stop" cr
 ;
+
 message 
