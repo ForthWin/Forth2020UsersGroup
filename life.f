@@ -5,7 +5,7 @@
 \ -----------------------------------------------------------------------------
 
  
-S" pixel.f" INCLUDED
+\ S" pixel.f" INCLUDED
 
 320 constant largeur-monde \
 200 constant hauteur-monde
