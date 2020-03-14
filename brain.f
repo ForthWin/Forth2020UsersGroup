@@ -125,7 +125,7 @@ variable etat
 
 : run
 	initialisation
-        init	
+        init-screen	
 	dessine-monde
 	BEGIN 
 		dessine-monde
