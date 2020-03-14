@@ -4,56 +4,7 @@
 \  Michel Jean 2019 update mars 2020
 \ -----------------------------------------------------------------------------
 
-
-ALSO GRAPHICS DEFINITIONS      \ all the graphic words  is inside this 
-                               \ vocabulary
-
-\ ==================== Random ====================================
-
-WINAPI: GetTickCount KERNEL32.DLL
-
-variable seed
-GetTickCount seed !
-
-
-: Random    ( -- x )  \ return a 32-bit random number x
-   seed @
-   dup 13 lshift xor
-   dup 17 rshift xor
-   dup 5  lshift xor
-   dup seed !
-   um* nip
-;
-\ ==================================================================
-
-
-
-: init 
- S" Graphique" DROP    \ title
- 800 1280 DEFWINDOW        \ 4 x 200-320  define a window size
- 60  DEFFPS                   \ 60 frame per second
- DROP ( DROP )
- BEGINDRAW
- #BLACK    
- CLRBKG                          \ Efface les deux buffers 
- ENDDRAW 
- DROP
- #BLACK
- CLRBKG                          \ #WHITE OR #BLACK BACKGR.
- ENDDRAW 
-  \ CloseWindow DROP 
-;
-
-variable color  \ couleur par default
-#lime color !
-
-: pixel ( X Y -- )
-color @ 4 4 3 roll 4 * 4 roll 4 * drawrect ;
-
-:  view enddraw ;                      \ affiche le buffer suivant
-
-: finish CloseWindow DROP ;
-
+S" pixel.f" INCLUDED
 
 320 constant largeur-monde \
 200 constant hauteur-monde
@@ -162,10 +113,10 @@ variable etat
 	largeur-monde 0 do
 	hauteur-monde 0 do
 		largeur-monde i * j + *monde @ + c@ 1 = if
-                #green color ! j i pixel else
+                j i green pixel else
 		largeur-monde i * j + *monde @ + c@ 2 = if
-                #red color ! j i pixel else
-                #black color ! j i pixel 
+                j i red pixel else
+                j i black pixel 
 
 	then then
 	loop loop
