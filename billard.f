@@ -193,7 +193,7 @@ loop loop
 
 : depart
 	initialisation
-        init	
+        init-screen	
 	dessine-monde
 	view
 ;
