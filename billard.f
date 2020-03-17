@@ -193,7 +193,7 @@ loop loop
 
 : depart
 	initialisation
-	set-screen
+        init-screen	
 	dessine-monde
 	view
 ;
@@ -210,7 +210,7 @@ loop loop
 	regenere-mondeB
 	\ key? if key 83 = if cr exit then then
 	AGAIN
-	glclose
+        finish
 ;
 
 : run
