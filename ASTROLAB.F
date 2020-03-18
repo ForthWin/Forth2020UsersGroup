@@ -346,7 +346,8 @@ ENDCASE
         218.3164591E 481267.88134236E T f@ f* f+
         0.0013268E T f@ FDUP f* f* f-
         T f@ FDUP FDUP f* f* 538841E f/ f+
-        T f@ FDUP FDUP FDUP f* f* f* 65194000E f/ f- B f!
+        T f@ FDUP FDUP FDUP f* f* f* 65194000E f/ f- 
+        B f!
 ;
 
 : RUN
