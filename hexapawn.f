@@ -135,7 +135,7 @@ cr
 ;
 : nouvelle-partie?
 cr ." Number of games played : " nbr-partie @ . cr
-." Victories - Humain : " nbr-gain-joueur ? ." - Computer : " nbr-gain-ordi ? cr
+." Victories - Humain : " nbr-gain-joueur ? ." - Forth2020 : " nbr-gain-ordi ? cr
 cr ." Press any key for a new game."  cr key drop
 ;
 
