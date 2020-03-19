@@ -55,18 +55,18 @@ create liste-reponses
 
 : intro
 cr
-." Hexapawn est un jeu invent" 130 emit ."  par Martin Gardner." cr
-." Sur un " 130 emit ." chiquier de dimension 3x3. Comme aux " 130 emit ." checs, " cr
-." les pions avancent en ligne droite et capturent en " cr
-." diagonale. " cr
-." Pour gagner, un joueur doit faire progresser l'un de " cr
-." ses pions " 133 emit ."  l'extr" 130 emit ." mit" 130 emit ."  oppos" 130 emit ." e de l'echiquier ou emp" 136 emit ." cher " cr
-." l'autre joueur de se d" 130 emit ." placer." cr
+." Hexapawn is a two-player game invented by Martin Gardner." cr
+." On a board of size 3x3, each player begins with 3 pawns," cr
+." As in chess, each pawn moved one square forward, " cr
+." and capture diagonally ahead of it. " cr
+." A player loses if he/she has no legal moves or " cr
+." the other player reaches the end of the board with a pawn. " cr
 ;
 
 : plateau-dessin ( -- )
 cr
-	." ------------- " cr   
+	." ------------- "   
+	."    ------------- " cr   
 3 0 do  ." | " 
         3 0 do 
                 i j 3 * + cells position + @
@@ -77,7 +77,13 @@ cr
 		endcase
         ." | "
         loop
-	cr ." ------------- " cr   
+        i case
+        0 of ."    | 1 | 2 | 3 | " endof    
+        1 of ."    | 4 | 5 | 6 | " endof    
+        2 of ."    | 7 | 8 | 9 | " endof    
+        endcase
+	cr ." ------------- "
+	."    ------------- " cr   
         loop
 ;
 
@@ -98,27 +104,20 @@ cr
 ;
 
 : entre-coup
-	." ------------- " cr    
-	." | 1 | 2 | 3 | " cr    
-	." ------------- " cr    
-	." | 4 | 5 | 6 | " cr    
-	." ------------- " cr    
-	." | 7 | 8 | 9 | " cr   
-	." ------------- " cr
-	cr ." Entrez la position de d" 130 emit ." part : "
+	cr ." Piece to move ? : "
 	PAD DUP 4 ACCEPT EVALUATE CJD !  \ accept jusqu'a un nombre de 4 chiffres
-	." Entrez la position d'arriv" 130 emit ."  : "
+	." to ?   : "
 	PAD DUP 4 ACCEPT EVALUATE CJA !
 ;
 
 : coup-valide?
-	CJD @ 9 > CJD @ 1 < or if ." Coup de d" 130 emit ." part non valide!" entre-coup recurse else
-	CJA @ 9 > CJA @ 1 < or if ." Coup d'arriv" 130 emit ." non valide!" entre-coup recurse else
-	CJD @ 1- cells position + @ 1 = not if ." Coup de d" 130 emit ." part non valide!" entre-coup recurse else
+	CJD @ 9 > CJD @ 1 < or if ." Invalid move!" entre-coup recurse else
+	CJA @ 9 > CJA @ 1 < or if ." Invalid move!" entre-coup recurse else
+	CJD @ 1- cells position + @ 1 = not if ." Invalid move!" entre-coup recurse else
 	CJD @ CJA @ - 3 = CJA @ 1- cells position + @ 2 = and if modifie-position-joueur else
 	CJD @ CJA @ - 2 = CJA @ 1- cells position + @ 3 = and if modifie-position-joueur else
 	CJD @ CJA @ - 4 = CJA @ 1- cells position + @ 3 = and if modifie-position-joueur else
-	." Coup non valide!" entre-coup recurse then then then then then then
+	." Invalid move!" entre-coup recurse then then then then then then
 ;
 
 
@@ -135,9 +134,9 @@ cr
 	position-code !
 ;
 : nouvelle-partie?
-cr ." Nombre de parties jou" 130 emit ." es : " nbr-partie @ . cr
-." Victoires - Humain : " nbr-gain-joueur ? ." - Ordinateur : " nbr-gain-ordi ? cr
-cr ." Appuyez sur une touche pour une nouvelle partie."  cr key drop
+cr ." Number of games played : " nbr-partie @ . cr
+." Victories - Humain : " nbr-gain-joueur ? ." - Computer : " nbr-gain-ordi ? cr
+cr ." Press any key for a new game."  cr key drop
 ;
 
 : modifie-reponse
@@ -158,14 +157,14 @@ reponse @ 0 = if 0 liste-positions index @ cells + ! then
 
 : machine-gagne ( -- )
 	plateau-dessin
-	cr ." J'ai gagn" 130 emit ." !" cr
+	cr ." I win :-) !" cr
 	nbr-gain-ordi @ 1+ nbr-gain-ordi !
 	nbr-partie @ 1+ nbr-partie !
 	position-depart
 	nouvelle-partie?
 ;
 : joueur-gagne ( -- )
-	cr ." Vous avex gagn" 130 emit ." !" cr
+	cr ." You win :-( !" cr
 	nbr-gain-joueur @ 1+ nbr-gain-joueur !
 	nbr-partie @ 1+ nbr-partie !
 	apprentissage
