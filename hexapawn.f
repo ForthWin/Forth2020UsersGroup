@@ -1,7 +1,19 @@
 \ Hexapawn
 \ Michel Jean 2019
+WINAPI: GetTickCount KERNEL32.DLL
 
-set-screen
+variable seed
+GetTickCount seed !
+
+: Random    ( -- x )  \ return a 32-bit random number x
+    seed @
+    dup 13 lshift xor
+    dup 17 rshift xor
+    dup 5  lshift xor
+    dup seed !
+    um* nip
+;
+
 variable position 8 cells allot
 variable CJD  \ départ coup joueur
 variable CJA	\ arrivé coup joueur
@@ -52,21 +64,23 @@ cr
 ." l'autre joueur de se d" 130 emit ." placer." cr
 ;
 
-: plateau-dessin ( n -- )
-9 0 do i dup cells position + @
-		case 
-		1 of white piece-dessine endof
-		3 of black piece-dessine endof
-  2 of drop endof
+: plateau-dessin ( -- )
+cr
+	." ------------- " cr   
+3 0 do  ." | " 
+        3 0 do 
+                i j 3 * + cells position + @
+        case 
+		1 of ." O " endof
+		3 of ." X " endof
+                2 of ."   " endof
 		endcase
-loop
+        ." | "
+        loop
+	cr ." ------------- " cr   
+        loop
 ;
 
-: plateau-dessin
-plateau
-pieces
-view	  
-;
 : position-depart
 1 1 1 2 2 2 3 3 3 9 0 do position i cells + ! loop
 ;
@@ -84,7 +98,6 @@ view
 ;
 
 : entre-coup
-cr
 	." ------------- " cr    
 	." | 1 | 2 | 3 | " cr    
 	." ------------- " cr    
@@ -201,7 +214,7 @@ BEGIN
 	entre-coup
 	coup-valide?
 	plateau-dessin
-	1000 pause
+        1000 pause
 	reponses-position
 	ordi-gagne?
 	plateau-dessin
