@@ -180,7 +180,7 @@ create help_buf 8192 allot
 variable help_line
 
 : page 
-        50 0 do cr loop ;
+        cls ;
 
 : help ( -- )
     page
