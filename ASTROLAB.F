@@ -340,14 +340,14 @@ ENDCASE
 ;
 
 \ --------------------------------------------------------
-\                         MOON
+\                         MOON          !Work in progres!!
 \ --------------------------------------------------------
-: LONGITUDE-MOON ( -- ) \ store in B            !!!!!WORK IN PROGRESS!!!!!!
+: LONGITUDE-MOON ( -- ) \ store in B
         218.3164591E 481267.88134236E T f@ f* f+
         0.0013268E T f@ FDUP f* f* f-
         T f@ FDUP FDUP f* f* 538841E f/ f+
         T f@ FDUP FDUP FDUP f* f* f* 65194000E f/ f- 
-        B f!
+        FDUP 360e f/ floor f* f- f. B f!
 ;
 
 : RUN
@@ -356,4 +356,4 @@ ENDCASE
 	SUN POSITION-OBJET
         BETELGEUSE POSITION-OBJET
 ;
-RUN
+
