@@ -290,7 +290,7 @@ ENDCASE
 	." -----------------------------------------" CR
 ;
 
-: EPHEMERIS-DAY ( -- ) \ STOCK T (EPHEMERIS DAY - DYNAMICAL TIME) EN T 
+: EPHEMERIS-DAY ( -- ) \ TAKE JD - STOCK T (EPHEMERIS DAY - DYNAMICAL TIME) EN T 
 	JD F@ 2451545.0E F- 36525E F/ T F! ;
 
 \ --------------------------------------------------------
@@ -347,7 +347,8 @@ ENDCASE
         0.0013268E T f@ FDUP f* f* f-
         T f@ FDUP FDUP f* f* 538841E f/ f+
         T f@ FDUP FDUP FDUP f* f* f* 65194000E f/ f- 
-        FDUP 360e f/ floor f* f- f. B f!
+	FDUP 360E F/ FLOOR 360E F* F- 	\ MODULO 360
+        B f!
 ;
 
 : RUN
