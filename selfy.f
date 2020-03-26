@@ -1,4 +1,4 @@
-\ selfy is a computer program which takes no input and produces a copy of its 
+\ selfy is a program which takes no input and produces a copy of its 
 \ own source code as its only output. The standard terms for these programs 
 \ are "self-replicating programs" or Quine.
 
