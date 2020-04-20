@@ -27,10 +27,10 @@ variable arr-cells nbr-cells cells allot
                 / pos @ 1 - * ret !
         then ;
 
-: release-stack         \ hold the last digit and release other digits of the stack
+: release-stack                 \ hold the last digit and release other digits of the stack
         depth 1 > if depth 1- roll . recurse else then ;
 
-: release-stack+1       \ hold the last digit and release other digits on the stack + 1 modulo 10
+: release-stack+1               \ hold the last digit and release other digits of the stack + 1 modulo 10
         depth 1 > if 
         depth 1- roll 1+ 10 mod . 
         recurse else then ;
@@ -40,7 +40,7 @@ variable arr-cells nbr-cells cells allot
         dup 10 = if release-stack+1 drop 0 else
         then then ;
 
-: 1digit ( -- )
+: 1digit ( -- )                 \ calculate 1 digit at the time
         1 nbr-cells do
         i pos ! algo-base -1 +loop set-predigit ;
 
