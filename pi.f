@@ -46,8 +46,8 @@ variable arr-cells nbr-cells cells allot
 
 : run ( -- )
         0 ret ! initialisation
-        20 0 do                \ 20 digits by line
-        nbr-digits 20 / 0 do 1digit loop
+        nbr-digits 50 / 0 do                
+        50 0 do 1digit loop     \ 50 digits by line
         cr loop
         drop ;                  \ drop the last digit (value not safe)
 run
