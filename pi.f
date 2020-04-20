@@ -31,8 +31,9 @@ variable arr-cells nbr-cells cells allot
         depth 1 > if depth 1- roll . recurse else then ;
 
 : release-stack+1       \ hold the last digit and release other digits on the stack + 1 modulo 10
-        depth 1 > if \ garde un élément dans le stack
-        depth 1- roll 1+ 10 mod . recurse else then ;
+        depth 1 > if 
+        depth 1- roll 1+ 10 mod . 
+        recurse else then ;
 
 : set-predigit ( -- n )
         ret @ dup 9 < if release-stack else
