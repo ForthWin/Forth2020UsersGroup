@@ -101,8 +101,8 @@ fvariable vn    \ new velocity
         cr ." ON THE MOON AT "  t f@ f>d drop . ." SECONDES "
         cr ." IMPACT VELOCITY "  v f@ 2.237e f* f>d drop . ." MPH " 
         cr ." FULL LEFT "  mt f@ 2.20462e f* f>d drop . ." LBS  " cr 
-        v f@ 0.54e f< if ." PERFECT LANDING NEIL" else
-        v f@ 4.5e f< if ." ROUGH LANDING" else
+        v f@ 0.54e f< if ." PERFECT LANDING NEIL" cr else
+        v f@ 4.5e f< if ." ROUGH LANDING" cr else
         v f@ 25e f< if ." THE LEM IS BROKEN. A RESCUE MISSION" cr
         ." HAVE TO RECOVER YOU" cr else
         ." YOU HAVE CREATED A NEW CRATER ON THE MOON" cr
