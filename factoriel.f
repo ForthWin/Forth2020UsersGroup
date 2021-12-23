@@ -1,45 +1,48 @@
-create resultat 10000 cells allot 
-variable grandeur_res 
-variable reste
-variable produit
-variable x
-variable nombre
+\ Program to calculate big factorial
+\ Michel Jean - December 2021
 
-: multiplie ( -- ) 
-    0 reste !
-    grandeur_res @ 0 do
-    i cells resultat + @ x @  * reste @ + produit !
-    produit @ 10 mod resultat i cells + !
-    produit @ 10 / reste !
+create result 10000 cells allot \ Size of the result
+variable result_size 
+variable carry
+variable product
+variable x
+variable number
+
+: calcul ( -- ) 
+    0 carry !
+    result_size @ 0 do
+    i cells result + @ x @  * carry @ + product !
+    product @ 10 mod result i cells + !
+    product @ 10 / carry !
     loop 
     
     begin
-    reste @ 0 > while
-    reste @ 10 mod resultat grandeur_res @ cells + !
-    reste @ 10 / reste !
-    grandeur_res @ 1+ grandeur_res !
+    carry @ 0 > while
+    carry @ 10 mod result result_size @ cells + !
+    carry @ 10 / carry !
+    result_size @ 1+ result_size !
     repeat
 ;
-: affichage ( -- )
-    ." La factoriel de " nombre ? ." est : " cr
-    grandeur_res @ 1- grandeur_res !
+: output ( -- )
+    ." The factorial of " number ? ." is : " cr
+    result_size @ 1- result_size !
     begin
-    grandeur_res @ 0 >= while
-    grandeur_res @ cells resultat + ? 
-    grandeur_res @ 1- grandeur_res !
+    result_size @ 0 >= while
+    result_size @ cells result + ? 
+    result_size @ 1- result_size !
     repeat
 ;
-: factoriel ( -- )
-    nombre !
-    1 resultat 0 cells + !
-    1 grandeur_res !
+: factorial ( -- )
+    number !
+    1 result 0 cells + !
+    1 result_size !
     2 x !
     
     begin 
-     x @ nombre @ <= while 
-    multiplie
+     x @ number @ <= while 
+ calcul
     x @ 1+ x !
      repeat
-    affichage 
+    output 
 ;
-500 factoriel
+500 factorial
