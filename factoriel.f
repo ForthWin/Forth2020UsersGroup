@@ -1,4 +1,4 @@
-variable resultat 10000 cells allot 
+create resultat 10000 cells allot 
 variable grandeur_res 
 variable reste
 variable produit
