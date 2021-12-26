@@ -7,15 +7,15 @@ create result 10000 cells allot \ Size of the result
 
 : calcul { carry product } 
     result_size 0 do
-    i cells result + @ x * carry + -> product
+    i cells result + @ x * carry + to product
     product 10 mod result i cells + !
-    product 10 / -> carry
+    product 10 / to carry
     loop 
     
     begin
     carry 0 > while
     carry 10 mod result result_size cells + !
-    carry 10 / -> carry
+    carry 10 / to carry
     1 +to result_size
     repeat
 ;
