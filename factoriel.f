@@ -1,6 +1,5 @@
 \ Program to calculate big factorial
-\ Michel Jean - December 2021
-\ Version without local variable
+\ Michel Jean - December 2021 v1.0
 
 create result 10000 cells allot \ Size of the result
 variable result_size 
@@ -42,9 +41,8 @@ variable input
     
     begin 
      x @ input @ <= while 
- calcul
+       calcul
     x @ 1+ x !
      repeat
     output 
 ;
-500 factorial
