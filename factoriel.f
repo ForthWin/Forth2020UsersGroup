@@ -2,8 +2,8 @@
 \ Michel Jean - December 2021
 
 create result 10000 cells allot \ Size of the result
-1 value result_size 
-2 value x
+0 value result_size 
+0 value x
 
 : calcul { carry product } 
     result_size 0 do
@@ -31,10 +31,11 @@ create result 10000 cells allot \ Size of the result
 ;
 : factorial { number }
     1 result 0 cells + !
-    
-    begin 
+    1 value result_size 
+    2 value x
+begin 
      x number <= while 
- 0 0 calcul
+    0 0 calcul
     x 1+ to x
      repeat
     output 
