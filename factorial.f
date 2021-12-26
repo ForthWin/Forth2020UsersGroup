@@ -29,12 +29,12 @@ create result 10000 cells allot \ Size of the result
     result_size 30 mod 0 = if cr then \ number by line 
     repeat
 ;
-: factorial { number }
+: factorial { input }
     1 result 0 cells + !
     1 to result_size
     2 to x 
     begin 
-     x number <= while 
+     x input <= while 
  0 0 calcul
     x 1+ to x
      repeat
