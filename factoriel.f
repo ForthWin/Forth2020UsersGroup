@@ -7,7 +7,7 @@ variable result_size
 variable carry
 variable product
 variable x
-variable number
+variable input
 
 : calcul ( -- ) 
     0 carry !
@@ -25,23 +25,23 @@ variable number
     repeat
 ;
 : output ( -- )
-    ." The factorial of " number ? ." is : " cr
+    ." The factorial of " input ? ." is : " cr
     result_size @ 1- result_size !
     begin
     result_size @ 0 >= while
     result_size @ cells result + ? 
     result_size @ 1- result_size !
-    result_size 30 mod 0 = if cr then \ number by line 
+    result_size 30 mod 0 = if cr then \ input by line 
     repeat
 ;
 : factorial ( -- )
-    number !
+    input !
     1 result 0 cells + !
     1 result_size !
     2 x !
     
     begin 
-     x @ number @ <= while 
+     x @ input @ <= while 
  calcul
     x @ 1+ x !
      repeat
