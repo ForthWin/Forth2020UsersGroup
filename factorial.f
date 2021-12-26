@@ -16,7 +16,7 @@ create result 10000 cells allot \ Size of the result
     carry 0 > while
     carry 10 mod result result_size cells + !
     carry 10 / -> carry
-    result_size 1+ to result_size
+    1 +to result_size
     repeat
 ;
 : output ( -- )
