@@ -4,7 +4,7 @@
 create answer 10000 cells allot \ Size of the answer
 0 value answer_size 
 
-: calcul { x carry product } 
+: calcul { x | carry product } 
     answer_size 0 do
     i cells answer + @ x * carry + to product
     product 10 mod answer i cells + !
@@ -34,8 +34,8 @@ create answer 10000 cells allot \ Size of the answer
     2 to x 
     begin 
      x input <= while 
-	x 0 0 calcul
-    x 1+ to x
+	x calcul
+     x 1+ to x
      repeat
     output 
 ;
